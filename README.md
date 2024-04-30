@@ -1,7 +1,7 @@
 # did:wk Method Specification
 
 > [!WARNING]
-> This specification is still a work in progress and does not necessarily represent the final form
+> This specification is still a work in progress and may be subject to change. Feedback and contributions are welcome.
 
 ### Authors
 
