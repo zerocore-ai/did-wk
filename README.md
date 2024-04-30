@@ -85,8 +85,6 @@ did-wk          = "did:wk:" multibase-key ("@" host-path)?
 host-path       = host-port [path]
 host-port       = <host> [":" <port>]
 path            = <path-abempty>
-digit           = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-
 multibase-key   = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
