@@ -166,7 +166,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 - `created`: Set to a current timestamp in ISO 8601 format.
 - `verificationMethod`: Set to the `id` of the verification method in the DID document associated with the signing key (likely `did:wk:<encoded-public-key>[@<host>[<path>]]#keys-1`).
 - `proofPurpose`: Set to `"assertionMethod"`.
-- `nonce`: Generate a sufficiently random nonce to prevent replay attacks.
+- `nonce`: Generate a sufficiently random nonce to prevent replay attacks. This field is optional but generally recommended.
 
 3. **Generate Signature:**
 
@@ -266,7 +266,7 @@ Deactivation has different implications depending on whether the DID functions i
 
 ### 4.3. Caveats
 
-- **Domain Security:** Users must prioritize secure domain management (strong passwords, 2FA, reputable registrars). Breaches on the domain level could undermine the security of hosted `did:wk` DID documents.
+- **Domain Security:** While the `proof` mechanism within `did:wk` DID documents mitigates some risks associated with domain ownership, secure domain management (strong passwords, 2FA, reputable registrars) remains good practice for overall security and to avoid potential disruptions due to expiration or non-renewal.
 - **Availability:** If a DID document is hosted, outages or disruptions could affect DID resolution. Consider redundancy (multiple hosts) or local caching mechanisms to improve resilience.
 - **Signature Freshness:** The `proof` section's timestamps and nonce prevent replay attacks. Verifiers should reject signatures exceeding a specified maximum age.
 
