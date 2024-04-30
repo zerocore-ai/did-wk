@@ -80,18 +80,18 @@ The method-specific identifier of a `did:wk` DID is comprised of the following c
 
 Here is the grammar for the `did:wk` format:
 
-```ebnf
-did-wk          := "did:wk:" multibase-key ("@" host-path)?
-host-path       := host-port ("/" path)*
-host-port       := host (":" port)?
-port            := digit+
-digit           := "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
-host            := <host-name>
-path            := <path-segment>
-multibase-key   := <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
+```abnf
+did-wk          = "did:wk:" multibase-key ("@" host-path)?
+host-path       = host-port [path]
+host-port       = <host> [":" <port>]
+path            = <path-abempty>
+digit           = "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9"
+
+multibase-key   = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
-`<host-name>` and `<path-segment>` are defined as per the [URI specification](https://tools.ietf.org/html/rfc3986).
+`<host>`, `<port>` and `<path-abempty>` are defined as per the [URI specification](https://tools.ietf.org/html/rfc3986).
+
 `<MULTIBASE>` and `<MULTICODEC>` are defined in the [Multiformats](https://multiformats.io/) specification.
 
 **Examples:**
@@ -103,7 +103,7 @@ multibase-key   := <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public
 **Explanation:**
 
 - If a URL segment is not present, the `did:wk` functions similarly to a `did:key`. The core identifier is derived from the public key, enabling basic verification.
-- If the URL segment is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<host>[/<path>]/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
+- If the URL segment is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<host>[<path>]/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
 
 ## 3. Operations
 
@@ -188,7 +188,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
    - **No URL Segment:** Resolve the DID according to the `did:key` specification. The DID document itself is derived from the public key portion of the DID.
    - **URL Segment Present**
-     - **Fetch:** Retrieve the DID document from the specified URL (`https://<host>/<path>/.well-known/did.json`).
+     - **Fetch:** Retrieve the DID document from the specified URL (`https://<host>[<path>]/.well-known/did.json`).
      - **Verify Signature:**
        - Locate the `proof` section within the document.
        - Ensure the `verificationMethod` matches a key controlled by the entity resolving the DID.
