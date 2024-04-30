@@ -96,17 +96,9 @@ multibase-key   := <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public
 
 **Examples:**
 
-```
-did:wk:z6MkwFK7L2unwCxXNaws5wxbWKbzEiC84mCYno7RW5dZ7rzq@neomancypher.zerocore.ai/pub
-```
-
-```
-did:wk:z6MkwFK7L2unwCxXNaws5wxbWKbzEiC84mCYno7RW5dZ7rzq@neomancypher.zerocore.ai
-```
-
-```
-did:wk:z6MkwFK7L2unwCxXNaws5wxbWKbzEiC84mCYno7RW5dZ7rzq
-```
+- `did:wk:z6MkwFK7L2unwCxXNaws5wxbWKbzEiC84mCYno7RW5dZ7rzq@neomancypher.zerocore.ai/pub`
+- `did:wk:z6MkwFK7L2unwCxXNaws5wxbWKbzEiC84mCYno7RW5dZ7rzq@neomancypher.zerocore.ai`
+- `did:wk:z6MkwFK7L2unwCxXNaws5wxbWKbzEiC84mCYno7RW5dZ7rzq`
 
 **Explanation:**
 
