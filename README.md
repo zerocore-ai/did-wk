@@ -81,11 +81,9 @@ The method-specific identifier of a `did:wk` DID is comprised of the following c
 Here is the grammar for the `did:wk` format:
 
 ```abnf
-did-wk          = "did:wk:" multibase-key ["@" host-path]
-host-path       = host-port [path]
-host-port       = <host> [":" <port>]
-path            = <path-abempty>
-multibase-key   = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
+did-wk             = "did:wk:" multibase-key ["@" locator-component]
+locator-component  = <host> [<path-abempty>]
+multibase-key      = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
 `<host>`, `<port>` and `<path-abempty>` are defined as per the URI specification [^3].
