@@ -42,7 +42,7 @@ Decentralized Identifiers (DIDs) provide a self-sovereign way for individuals an
 
 **Motivation**
 
-While DID methods like `did:key` offer simplicity, they lack a robust mechanism to establish verifiable ownership of the underlying key pair. Conversely, `did:web` relies on domain names, but doesn't offer an intrinsic way to prove the connection between the DID document and the controller of the domain. The `did:wk` method aims to bridge this gap by:
+While DID methods like `did:key` [^1] offer simplicity, they lack a robust mechanism to establish verifiable ownership of the underlying key pair. Conversely, `did:web` [^2] relies on domain names, but doesn't offer an intrinsic way to prove the connection between the DID document and the controller of the domain. The `did:wk` method aims to bridge this gap by:
 
 - **Strong Ownership Proof:** Incorporating a cryptographic signature within the DID document to establish a verifiable link between the document and the corresponding public key.
 - **Decentralized Foundation:** Utilizing user-owned web servers to promote self-sovereignty, giving users control over their DID documents.
@@ -88,9 +88,9 @@ path            = <path-abempty>
 multibase-key   = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
-`<host>`, `<port>` and `<path-abempty>` are defined as per the [URI specification](https://tools.ietf.org/html/rfc3986).
+`<host>`, `<port>` and `<path-abempty>` are defined as per the URI specification [^3].
 
-`<MULTIBASE>` and `<MULTICODEC>` are defined in the [Multiformats](https://multiformats.io/) specification.
+`<MULTIBASE>` and `<MULTICODEC>` are defined in the Multiformats [^4] specification.
 
 **Examples:**
 
@@ -100,7 +100,7 @@ multibase-key   = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-
 
 **Explanation:**
 
-- If a locator component is not present, the `did:wk` functions similarly to a `did:key`. The core identifier is derived from the public key, enabling basic verification.
+- If a locator component is not present, the `did:wk` functions similarly to a `did:key` [^1]. The core identifier is derived from the public key, enabling basic verification.
 - If the locator component is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<host>[<path>]/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
 
 ## 3. Operations
@@ -260,5 +260,12 @@ Deactivation has different implications depending on whether the DID functions i
 - **Availability:** If a DID document is hosted, outages or disruptions could affect DID resolution. Consider redundancy (multiple hosts) or local caching mechanisms to improve resilience.
 - **Signature Freshness:** The `proof` section's timestamps and nonce prevent replay attacks. Verifiers should reject signatures exceeding a specified maximum age.
 
+[^1]: https://w3c-ccg.github.io/did-method-key/
+[^2]: https://w3c-ccg.github.io/did-method-web/
+[^3]: https://tools.ietf.org/html/rfc3986
+[^4]: https://multiformats.io/
+
 [steve-github]: https://github.com/appcypher
 [zerocore]: https://zerocore.ai
+
+
