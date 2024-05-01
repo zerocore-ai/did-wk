@@ -81,7 +81,7 @@ The method-specific identifier of a `did:wk` DID is comprised of the following c
 Here is the grammar for the `did:wk` format:
 
 ```abnf
-did-wk          = "did:wk:" multibase-key ("@" host-path)?
+did-wk          = "did:wk:" multibase-key ["@" host-path]
 host-path       = host-port [path]
 host-port       = <host> [":" <port>]
 path            = <path-abempty>
