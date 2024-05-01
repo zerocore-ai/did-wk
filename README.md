@@ -76,14 +76,14 @@ The method-specific identifier of a `did:wk` DID is comprised of the following c
 - **Optional Locator Component:** Comprised of:
   - The `@` symbol as a separator.
   - The **host** portion of a domain name.
+  - An optional **port** component preceded by a `:`.
   - An optional **path** component for more specific resource locations.
 
 Here is the grammar for the `did:wk` format:
 
 ```abnf
 did-wk             = "did:wk:" multibase-key [ "@" locator-component ]
-locator-component  = host-port [ <path-abempty> ]
-host-port          = <host> [ ":" <port> ]
+locator-component  = <host> [ ":" <port> ] [ <path-abempty> ]
 multibase-key      = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
@@ -100,7 +100,7 @@ multibase-key      = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-publ
 **Explanation:**
 
 - If a locator component is not present, the `did:wk` functions similarly to a `did:key` [^1]. The core identifier is derived from the public key, enabling basic verification.
-- If the locator component is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<host>[<path>]/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
+- If the locator component is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<locator-component>/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
 
 ## 3. Operations
 
@@ -114,7 +114,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
 2. **Determining DID Document Mode:**
 
-   - **No Locator Component:** If the DID does not include a locator component (`@<host>[<path>]`), the DID and DID document are determined as per the `did:key` specification.
+   - **No Locator Component:** If the DID does not include a locator component (`@<locator-component>`), the DID and DID document are determined as per the `did:key` specification.
    - **Locator Component Present:** Proceed to steps 3 and 4 to create and fetch a hosted DID document.
 
 3. **DID Document Template (locator mode):**
@@ -122,16 +122,16 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 ```json5
 {
   "@context": "https://www.w3.org/ns/did/v1",
-  "id": "did:wk:<encoded-public-key>[@<host>[<path>]]",
+  "id": "did:wk:<encoded-public-key>[@<locator-component>]",
   "verificationMethod": [
     {
-      "id": "did:wk:<encoded-public-key>[@<host>[<path>]]#keys-1",
+      "id": "did:wk:<encoded-public-key>[@<locator-component>]#keys-1",
       "type": "Ed25519VerificationKey2018", // Or other supported type
-      "controller": "did:wk:<encoded-public-key>[@<host>[<path>]]",
+      "controller": "did:wk:<encoded-public-key>[@<locator-component>]",
       "publicKeyBase58": "<base58-encoded-public-key>"
     }
   ],
-  "authentication": ["did:wk:<encoded-public-key>[@<host>[<path>]]#keys-1"],
+  "authentication": ["did:wk:<encoded-public-key>[@<locator-component>]#keys-1"],
   "proof": {
     // Signature details to be added later
   }
@@ -141,7 +141,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 4. **Replace Placeholders:**
 
    - **`<encoded-public-key>`:** Replace with the encoded public key generated in step 1 (See section 3.1.4).
-   - **`<host>` and `<path>`:** Replace these with the corresponding domain name and path for the planned location of the DID document.
+   - **`<locator-component>`:** Replace these with the corresponding URL segments for the planned location of the DID document.
 
 5. **Proof Creation:** Proceed to section 3.1.2.
 
@@ -153,7 +153,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
 - `type`: Set to the chosen signature type (e.g., `"Ed25519Signature2018"`).
 - `created`: Set to a current timestamp in ISO 8601 format.
-- `verificationMethod`: Set to the `id` of the verification method in the DID document associated with the signing key (likely `did:wk:<encoded-public-key>[@<host>[<path>]]#keys-1`).
+- `verificationMethod`: Set to the `id` of the verification method in the DID document associated with the signing key (likely `did:wk:<encoded-public-key>[@<locator-component>]]#keys-1`).
 - `proofPurpose`: Set to `"assertionMethod"`.
 - `nonce`: Generate a sufficiently random nonce to prevent replay attacks. This field is optional but generally recommended.
 
@@ -185,7 +185,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
    - **No Locator Component:** Resolve the DID according to the `did:key` specification. The DID document itself is derived from the public key portion of the DID.
    - **Locator Component Present**
-     - **Fetch:** Retrieve the DID document from the final URL (`https://<host>[<path>]/.well-known/did.json`).
+     - **Fetch:** Retrieve the DID document from the final URL (`https://<locator-component>/.well-known/did.json`).
      - **Verify Signature:**
        - Locate the `proof` section within the document.
        - Ensure the `verificationMethod` matches a key controlled by the entity resolving the DID.
