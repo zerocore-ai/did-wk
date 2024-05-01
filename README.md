@@ -73,7 +73,7 @@ The method-specific identifier of a `did:wk` DID is comprised of the following c
 - **Encoded Public Key:** A public key, encoded using:
   1. **Multicodec** to specify the key type and format.
   2. **Multibase** to represent the encoded key as a string.
-- **Optional URL Segment:** Comprised of:
+- **Optional Locator Component:** Comprised of:
   - The `@` symbol as a separator.
   - The **host** portion of a domain name.
   - An optional **path** component for more specific resource locations.
@@ -100,8 +100,8 @@ multibase-key   = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-
 
 **Explanation:**
 
-- If a URL segment is not present, the `did:wk` functions similarly to a `did:key`. The core identifier is derived from the public key, enabling basic verification.
-- If the URL segment is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<host>[<path>]/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
+- If a locator component is not present, the `did:wk` functions similarly to a `did:key`. The core identifier is derived from the public key, enabling basic verification.
+- If the locator component is provided, it points to a hosted DID document. The document, located at the well-known path (`https://<host>[<path>]/.well-known/did.json`), contains further metadata, authentication methods, service endpoints, and a mandatory `proof` section cryptographically linking the DID document to the public key.
 
 ## 3. Operations
 
@@ -115,10 +115,10 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
 2. **Determining DID Document Mode:**
 
-   - **No URL Segment:** If the DID does not include a URL segment (`@<host>[<path>]`), the DID and DID document are determined as per the `did:key` specification.
-   - **URL Segment Present:** Proceed to steps 3 and 4 to create and fetch a hosted DID document.
+   - **No Locator Component:** If the DID does not include a locator component (`@<host>[<path>]`), the DID and DID document are determined as per the `did:key` specification.
+   - **Locator Component Present:** Proceed to steps 3 and 4 to create and fetch a hosted DID document.
 
-3. **DID Document Template (URL mode):**
+3. **DID Document Template (locator mode):**
 
 ```json5
 {
@@ -184,9 +184,9 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
 1. **Resolve DID:**
 
-   - **No URL Segment:** Resolve the DID according to the `did:key` specification. The DID document itself is derived from the public key portion of the DID.
-   - **URL Segment Present**
-     - **Fetch:** Retrieve the DID document from the specified URL (`https://<host>[<path>]/.well-known/did.json`).
+   - **No Locator Component:** Resolve the DID according to the `did:key` specification. The DID document itself is derived from the public key portion of the DID.
+   - **Locator Component Present**
+     - **Fetch:** Retrieve the DID document from the final URL (`https://<host>[<path>]/.well-known/did.json`).
      - **Verify Signature:**
        - Locate the `proof` section within the document.
        - Ensure the `verificationMethod` matches a key controlled by the entity resolving the DID.
@@ -197,7 +197,7 @@ This section outlines the steps involved in creating a `did:wk` DID, generating 
 
 ## 3.3 Update
 
-Updates primarily apply when a URL segment is present and the corresponding DID document is hosted.
+Updates primarily apply when a locator component is present and the corresponding DID document is hosted.
 
 1. **Key Rotation:**
 
@@ -220,9 +220,9 @@ Updates primarily apply when a URL segment is present and the corresponding DID 
 
 Deactivation has different implications depending on whether the DID functions in 'key mode' or has a resolvable URL.
 
-- **No URL Segment (did:key mode):** Deactivation is implied by the loss or revocation of the private key associated with the DID. There is no hosted DID document to modify in this scenario.
+- **No Locator Component (did:key mode):** Deactivation is implied by the loss or revocation of the private key associated with the DID. There is no hosted DID document to modify in this scenario.
 
-- **URL Segment Present:**
+- **Locator Component Present:**
 
   - **Option 1: Removal** Delete the DID document from the hosted location. Resolution will fail.
   - **Option 2: Revocation Metadata** Add a 'revoked' status or similar mechanism within the DID document itself, update the `proof` with a new signature, and upload the modified document.
@@ -243,7 +243,7 @@ Deactivation has different implications depending on whether the DID functions i
      - Add the new key to `verificationMethod`.
      - Optionally, mark the old key as superseded or remove it (depending on revocation policy).
      - Create a new signature in the `proof` section.
-  3. Upload the modified DID document (if a URL segment is present).
+  3. Upload the modified DID document (if a locator component is present).
 
 ### 4.2. Key Revocation
 
