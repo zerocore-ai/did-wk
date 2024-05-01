@@ -214,8 +214,6 @@ Updates primarily apply when a locator component is present and the correspondin
    - Update the `proof` with a new signature.
    - Upload the modified DID document to the specified host/path.
 
-3. **Other Metadata Changes:** Similar to the above, if changes are allowed within the `did:wk` scheme, update the hosted DID document and re-sign.
-
 ## 3.4 Deactivate
 
 Deactivation has different implications depending on whether the DID functions in 'key mode' or has a resolvable URL.
