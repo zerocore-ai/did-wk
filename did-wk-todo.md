@@ -1,0 +1,4 @@
+- [ ] Discuss `use cases`
+- [ ] Mention existing implementations
+- [ ] Add `Test Vectors` section
+- [ ] Improve `Caveats` section
