@@ -1,3 +1,4 @@
+- [ ] Should mention the HTTPS scheme requirement but HTTP okay for non-production use cases like dev or test env
 - [ ] Discuss use cases
 - [ ] Expand on target audience. Pretty vague rn
 - [ ] Mention existing implementations
