@@ -83,7 +83,7 @@ Here is the grammar for the `did:wk` format:
 ```abnf
 did-wk             = "did:wk:" multibase-key [ "@" locator-component ]
 locator-component  = host-port [ <path-abempty> ]
-host               = <host> [ ":" <port> ]
+host-port          = <host> [ ":" <port> ]
 multibase-key      = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
