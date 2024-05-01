@@ -1,4 +1,5 @@
-- [ ] Discuss `use cases`
+- [ ] Discuss use cases
+- [ ] Expand on target audience. Pretty vague rn
 - [ ] Mention existing implementations
 - [ ] Add `Test Vectors` section
 - [ ] Improve `Caveats` section
