@@ -84,7 +84,7 @@ Here is the grammar for the `did:wk` format:
 ```abnf
 did-wk             = "did:wk:" multibase-key [ "@" locator-component ]
 locator-component  = <host> [ ":" <port> ] [ <path-abempty> ]
-multibase-key      = <MULTIBASE(base58-btc, MULTICODEC(public-key-type, raw-public-key-bytes))>
+multibase-key      = <MULTIBASE(base-encoding-type, MULTICODEC(public-key-type, raw-public-key-bytes))>
 ```
 
 `<host>`, `<port>` and `<path-abempty>` are defined as per the URI specification [^3].
